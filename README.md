@@ -19,4 +19,6 @@ para que el equipo de los pits conozca la condición del kart.
 
 ## Sistema: Implementación Física
 
+## Sistema: Base de Datos
+
 ## Sistema: Página Web
