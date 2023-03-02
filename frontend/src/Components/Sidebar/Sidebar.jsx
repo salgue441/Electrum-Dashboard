@@ -1,24 +1,24 @@
-import { useState } from "react"
-import { Link } from "react-router-dom"
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 // React Pro ProSidebarProvider Components
-import { Sidebar, Menu, MenuItem, useProSidebar } from "react-pro-sidebar"
+import { Sidebar, Menu, MenuItem, useProSidebar } from "react-pro-sidebar";
 
 // MUI Components
-import { Box, Typography, useTheme, IconButton } from "@mui/material"
-import { MenuOutlined } from "@mui/icons-material"
+import { Box, Typography, useTheme, IconButton } from "@mui/material";
+import { MenuOutlined } from "@mui/icons-material";
 
 // Data
-import { MainOptions } from "../../Assets/Data/Sidebar"
+import { MainOptions } from "../../Assets/Data/Sidebar";
 
 // SidebarItem
-import SidebarItem from "../SidebarItems/SidebarItem"
+import SidebarItem from "../SidebarItems/SidebarItem";
 
 // Theme
-import { tokens } from "../../theme"
+import { tokens } from "../../theme";
 
 // Logo Image
-import logo from "../../Assets/Images/logoBlanco.svg"
+import logo from "../../Assets/Images/logoBlanco.svg";
 
 /**
  * @brief
@@ -26,32 +26,33 @@ import logo from "../../Assets/Images/logoBlanco.svg"
  * @return {JSX.Element} - The component to be rendered
  */
 const CustomProSidebarProvider = () => {
-  const theme = useTheme()
-  const colors = tokens(theme.palette.mode)
-  const { collapseSidebar } = useProSidebar()
-  const [showElements, setshowElements] = useState(true)
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  const { collapseSidebar } = useProSidebar();
+  const [showElements, setshowElements] = useState(true);
 
   return (
     <Box>
       <Sidebar
-        style={{ height: "100vh", width: "100%" }}
-        sx={{
-          "&:hover": {
-            backgroundColor: colors.primary[400],
-          },
-          "@media (max-width: 600px)": {
-            height: "100%",
-          },
-        }}
+        rootStyles={{ height: "100vh", width: "100%" }}
         backgroundColor={colors.primary[400]}
         rtl={false}
       >
         {/* Header */}
-        <Menu iconShape="square">
+        <Menu
+          iconShape="square"
+          menuItemStyles={{
+            button: () => ({
+              "&:hover": {
+                backgroundColor: colors.primary[500],
+              },
+            }),
+          }}
+        >
           <MenuItem
             onClick={() => {
-              collapseSidebar()
-              setshowElements(!showElements)
+              collapseSidebar();
+              setshowElements(!showElements);
             }}
             icon={
               collapseSidebar ? (
@@ -145,7 +146,7 @@ const CustomProSidebarProvider = () => {
         </Menu>
       </Sidebar>
     </Box>
-  )
-}
+  );
+};
 
-export default CustomProSidebarProvider
+export default CustomProSidebarProvider;
