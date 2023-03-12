@@ -18,21 +18,20 @@
 #include <libusb-1.0/libusb.h>
 
 /**
- * @brief 
+ * @brief
  * Initialize USB communication
  * @return int - 0 if success, -1 if error
  */
 int init_usb_communication(void);
 
 /**
- * @brief 
+ * @brief
  * Close USB communication
- * @return int - 0 if success, -1 if error
  */
-int close_usb_communication(void);
+void close_usb_communication(void);
 
 /**
- * @brief 
+ * @brief
  * Read data from USB
  * @param data - Data to send
  * @param size - Size of data
