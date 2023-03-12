@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/usb_communication.dir/usb_communication.c.o -o usb_communication  -lusb-1.0 

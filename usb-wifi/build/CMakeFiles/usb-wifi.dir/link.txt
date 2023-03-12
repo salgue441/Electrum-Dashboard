@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/usb-wifi.dir/main.cpp.o -o usb-wifi  /usr/lib/libboost_system.so.1.81.0 

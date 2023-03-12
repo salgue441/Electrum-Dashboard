@@ -1,13 +1,11 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.21)
 
 project(usb-wifi)
 
-set(CMAKE_C_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
-# find libusb library
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(LIBUSB REQUIRED libusb-1.0)
+# Boost 1.76.0 library
+find_package(Boost 1.76 REQUIRED COMPONENTS system)
 
-# add subdirectories
-add_subdirectory(server)
-add_subdirectory(usb)
+add_executable(usb-wifi main.cpp)
+target_link_libraries(usb-wifi PRIVATE Boost::system)

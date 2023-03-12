@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/websocket_server.dir/websocket_server.c.o -o websocket_server  -Wl,-rpath,/home/carlos/libwebsockets/build/lib /home/carlos/libwebsockets/build/lib/libwebsockets.so 

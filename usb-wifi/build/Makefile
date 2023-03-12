@@ -117,30 +117,41 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named websocket_server
+# Target rules for targets named usb-wifi
 
 # Build rule for target.
-websocket_server: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 websocket_server
-.PHONY : websocket_server
+usb-wifi: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 usb-wifi
+.PHONY : usb-wifi
 
 # fast build rule for target.
-websocket_server/fast:
-	$(MAKE) $(MAKESILENT) -f server/CMakeFiles/websocket_server.dir/build.make server/CMakeFiles/websocket_server.dir/build
-.PHONY : websocket_server/fast
+usb-wifi/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/usb-wifi.dir/build.make CMakeFiles/usb-wifi.dir/build
+.PHONY : usb-wifi/fast
 
-#=============================================================================
-# Target rules for targets named usb_communication
+main.o: main.cpp.o
+.PHONY : main.o
 
-# Build rule for target.
-usb_communication: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 usb_communication
-.PHONY : usb_communication
+# target to build an object file
+main.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/usb-wifi.dir/build.make CMakeFiles/usb-wifi.dir/main.cpp.o
+.PHONY : main.cpp.o
 
-# fast build rule for target.
-usb_communication/fast:
-	$(MAKE) $(MAKESILENT) -f usb/CMakeFiles/usb_communication.dir/build.make usb/CMakeFiles/usb_communication.dir/build
-.PHONY : usb_communication/fast
+main.i: main.cpp.i
+.PHONY : main.i
+
+# target to preprocess a source file
+main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/usb-wifi.dir/build.make CMakeFiles/usb-wifi.dir/main.cpp.i
+.PHONY : main.cpp.i
+
+main.s: main.cpp.s
+.PHONY : main.s
+
+# target to generate assembly for a file
+main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/usb-wifi.dir/build.make CMakeFiles/usb-wifi.dir/main.cpp.s
+.PHONY : main.cpp.s
 
 # Help Target
 help:
@@ -150,8 +161,10 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... usb_communication"
-	@echo "... websocket_server"
+	@echo "... usb-wifi"
+	@echo "... main.o"
+	@echo "... main.i"
+	@echo "... main.s"
 .PHONY : help
 
 

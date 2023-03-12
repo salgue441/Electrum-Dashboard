@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/mnt/d/documents/Tec de Monterrey/Grupos Estudiantiles/electrum/usb-wifi/server/websocket_server.c" "server/CMakeFiles/websocket_server.dir/websocket_server.c.o" "gcc" "server/CMakeFiles/websocket_server.dir/websocket_server.c.o.d"
+  "/mnt/d/documents/Tec de Monterrey/Grupos Estudiantiles/electrum/usb-wifi/main.cpp" "CMakeFiles/usb-wifi.dir/main.cpp.o" "gcc" "CMakeFiles/usb-wifi.dir/main.cpp.o.d"
   )
 
 # Targets to which this target links.

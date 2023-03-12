@@ -1,2 +1,2 @@
-# Empty dependencies file for websocket_server.
+# Empty dependencies file for usb-wifi.
 # This may be replaced when dependencies are built.
