@@ -1,26 +1,50 @@
-// icons
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined"
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined"
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined"
-import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined"
-import MapOutlinedIcon from "@mui/icons-material/MapOutlined"
-import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined"
-import SpeedOutlined from "@mui/icons-material/SpeedOutlined"
-import TemperatureOutlined from "@mui/icons-material/DeviceThermostatOutlined"
-import StatsOulined from "@mui/icons-material/QueryStatsOutlined"
+import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined"
+import SwitchRightOutlinedIcon from "@mui/icons-material/SwitchRightOutlined"
+import SwitchLeftOutlinedIcon from "@mui/icons-material/SwitchLeftOutlined"
+import CalendarIcon from "@mui/icons-material/CalendarTodayOutlined"
+import ThermostatOutlinedIcon from "@mui/icons-material/ThermostatOutlined"
+import SpeedOutlinedIcon from "@mui/icons-material/SpeedOutlined"
+import BatteryStdOutlinedIcon from "@mui/icons-material/BatteryStdOutlined"
 
-export const MainOptions = [
+export const mainOptions = [
   {
     title: "Dashboard",
-    path: "/",
-    icon: <DashboardOutlinedIcon />,
+    to: "/",
+    icon: <HomeOutlinedIcon />
   },
   {
     title: "Race Calendar",
-    path: "/calendar",
-    icon: <CalendarTodayOutlinedIcon />,
+    to: "/calendar",
+    icon: <CalendarIcon />
   },
   {
     title: "Settings",
-    path: "/settings",
-    icon: <SettingsOutlinedIcon />,
+    to: "/settings",
+    icon: <SettingsOutlinedIcon />
+  }
+]
+
+/**
+ * @brief
+ * Sidebar data for the graph section
+ */
+export const graphData = [
+  {
+    title: "Temperature",
+    to: "/temperature",
+    icon: <ThermostatOutlinedIcon />
+  },
+  {
+    title: "Speed",
+    to: "/speed",
+    icon: <SpeedOutlinedIcon />
+  },
+  {
+    title: "Battery",
+    to: "/battery",
+    icon: <BatteryStdOutlinedIcon />
   },
 ]

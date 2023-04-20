@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { Routes, Route } from "react-router-dom"
 
 // Components
-import CustomSidebar from "./Components/Sidebar/Sidebar"
+import { SidebarContextProvider } from "./Components/Sidebar/sidebarContext"
 
 // Themes
 import { CssBaseline, ThemeProvider } from "@mui/material"
@@ -18,19 +18,19 @@ import "./Styles/App.css"
  */
 const App = () => {
   const [theme, colorMode] = useMode()
-  const [isSidebar, setIsSidebar] = useState(false)
-  const toggleSidebar = () => setIsSidebar(!isSidebar)
 
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
 
-        {/* Layouts */}
-        <div className="app">
-          <CustomSidebar isSidebar={isSidebar} toggleSidebar={toggleSidebar} />
-          <main className="content"></main>
-        </div>
+        <SidebarContextProvider>
+          <div style={{ height: "100%", width: "100%" }}>
+            <main>
+
+            </main>
+          </div>
+        </SidebarContextProvider>
       </ThemeProvider>
     </ColorModeContext.Provider>
   )

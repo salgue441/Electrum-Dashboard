@@ -1,37 +1,43 @@
 import { Link } from "react-router-dom"
 
-// MUI
-import { useTheme, Typography } from "@mui/material"
-
-// React Pro Sidebar Components
-import { MenuItem } from "react-pro-sidebar"
+// Mui
+import { MenuItem, Typography, useTheme, Box } from "@mui/material"
 
 // Theme
 import { tokens } from "../../theme"
 
 /**
  * @brief
- * Renders the sidebar item
- * @param {Object} props - The props passed to the component
- * @return {JSX.Element} - The component to be rendered
+ * Renders a sidebar item
+ * @param {*} title - Title of the item
+ * @param {*} to - Path to the item
+ * @param {*} icon - Icon of the item
+ * @param {*} selected - Selected item
+ * @param {*} setSelected - Function to set the selected item
+ * @param {*} collapsed - Boolean to know if the sidebar is collapsed
+ * @returns
  */
-const SidebarItem = ({ props }) => {
+export const Item = ({ title, to, icon, selected, setSelected, collapsed }) => {
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
 
   return (
     <MenuItem
-      icon={<props.icon />}
-      onClick={() => props.setSelected(props.name)}
-      active={props.name === props.selected}
-      style={{
-        color: colors.grey[100],
-      }}
+      active={selected === title}
+      style={{ color: colors.grey[100] }}
+      onClick={() => setSelected(title)}
+      LinkComponent={Link}
+      to={to}
     >
-      <Typography>{props.name}</Typography>
-      <Link to={props.link} />
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent={collapsed ? "center" : "flex-start"}
+        width="100%"
+      >
+        <Box mr={!collapsed ? 2 : 0}>{icon}</Box>
+        {!collapsed && <Typography>{title}</Typography>}
+      </Box>
     </MenuItem>
   )
 }
-
-export default SidebarItem
