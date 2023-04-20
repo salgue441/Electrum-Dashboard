@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react"
 
 // React pro sidebar
 import { Menu, Sidebar, MenuItem } from "react-pro-sidebar"
@@ -13,15 +12,8 @@ import { tokens } from "../../theme"
 import { useTheme, Box, Typography, IconButton } from "@mui/material"
 
 // Icons
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined"
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined"
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined"
-import SwitchRightOutlinedIcon from "@mui/icons-material/SwitchRightOutlined"
-import SwitchLeftOutlinedIcon from "@mui/icons-material/SwitchLeftOutlined"
-import CalendarIcon from "@mui/icons-material/CalendarTodayOutlined"
-import ThermostatOutlinedIcon from "@mui/icons-material/ThermostatOutlined"
-import SpeedOutlinedIcon from "@mui/icons-material/SpeedOutlined"
-import BatteryStdOutlinedIcon from "@mui/icons-material/BatteryStdOutlined"
 
 // Data
 import { mainOptions, graphData } from "../../Assets/Data/Sidebar"
@@ -34,7 +26,7 @@ const SidebarComponent = () => {
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
   const [selected, setSelected] = useState("Dashboard")
-  const { sidebarRTL, setSidebarRTL, sidebarImage } = useSidebarContext()
+  const { sidebarRTL, sidebarImage } = useSidebarContext()
   const { collapseSidebar, toggleSidebar, collapsed, broken } = useProSidebar()
 
   return (
@@ -187,7 +179,7 @@ const SidebarComponent = () => {
         </Menu>
       </Sidebar>
     </Box>
-  );
-};
+  )
+}
 
 export default SidebarComponent
