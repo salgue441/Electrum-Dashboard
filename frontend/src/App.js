@@ -5,6 +5,9 @@ import { Routes, Route } from "react-router-dom"
 import { SidebarContextProvider } from "./Components/Sidebar/sidebarContext"
 import Topbar from "./Components/Topbar/Topbar"
 
+// Views
+import Dashboard from "./Views/Dashboard/Dashboard"
+
 // Themes
 import { CssBaseline, ThemeProvider } from "@mui/material"
 import { ColorModeContext, useMode } from "./theme"
@@ -29,6 +32,13 @@ const App = () => {
           <div style={{ height: "100%", width: "100%" }}>
             <main>
               <Topbar />
+
+              <Routes>
+                <Route path="/" element={
+                  <Dashboard />
+                } />
+
+              </Routes>
             </main>
           </div>
         </SidebarContextProvider>
