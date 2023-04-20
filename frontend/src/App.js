@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom"
 
 // Components
 import { SidebarContextProvider } from "./Components/Sidebar/sidebarContext"
+import Topbar from "./Components/Topbar/Topbar"
 
 // Themes
 import { CssBaseline, ThemeProvider } from "@mui/material"
@@ -27,7 +28,7 @@ const App = () => {
         <SidebarContextProvider>
           <div style={{ height: "100%", width: "100%" }}>
             <main>
-
+              <Topbar />
             </main>
           </div>
         </SidebarContextProvider>
