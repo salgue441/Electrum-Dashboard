@@ -26,7 +26,7 @@ export const Item = ({ title, to, icon, selected, setSelected, collapsed }) => {
       active={selected === title}
       style={{ color: colors.grey[100] }}
       onClick={() => setSelected(title)}
-      LinkComponent={Link}
+      component={Link}
       to={to}
     >
       <Box

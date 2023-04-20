@@ -7,6 +7,8 @@ import Topbar from "./Components/Topbar/Topbar"
 
 // Views
 import Dashboard from "./Views/Dashboard/Dashboard"
+import Calendar from "./Views/Calendar/Calendar"
+import NotFound from "./Views/404/error"
 
 // Themes
 import { CssBaseline, ThemeProvider } from "@mui/material"
@@ -34,10 +36,9 @@ const App = () => {
               <Topbar />
 
               <Routes>
-                <Route path="/" element={
-                  <Dashboard />
-                } />
-
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/calendar" element={<Calendar />} />
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
           </div>
