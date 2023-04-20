@@ -6,7 +6,18 @@ import { MenuItem, Typography, useTheme, Box } from "@mui/material"
 // Theme
 import { tokens } from "../../theme"
 
-export const Item = ({ title, to, icon, selected, setSelected }) => {
+/**
+ * @brief
+ * Renders a sidebar item
+ * @param {*} title - Title of the item
+ * @param {*} to - Path to the item
+ * @param {*} icon - Icon of the item
+ * @param {*} selected - Selected item
+ * @param {*} setSelected - Function to set the selected item
+ * @param {*} collapsed - Boolean to know if the sidebar is collapsed
+ * @returns
+ */
+export const Item = ({ title, to, icon, selected, setSelected, collapsed }) => {
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
 
@@ -18,9 +29,14 @@ export const Item = ({ title, to, icon, selected, setSelected }) => {
       LinkComponent={Link}
       to={to}
     >
-      <Box display="flex" alignItems="center">
-        <Box mr={2}>{icon}</Box>
-        <Typography>{title}</Typography>
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent={collapsed ? "center" : "flex-start"}
+        width="100%"
+      >
+        <Box mr={!collapsed ? 2 : 0}>{icon}</Box>
+        {!collapsed && <Typography>{title}</Typography>}
       </Box>
     </MenuItem>
   )

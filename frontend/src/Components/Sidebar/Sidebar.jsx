@@ -13,10 +13,19 @@ import { tokens } from "../../theme"
 import { useTheme, Box, Typography, IconButton } from "@mui/material"
 
 // Icons
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined"
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined"
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined"
 import SwitchRightOutlinedIcon from "@mui/icons-material/SwitchRightOutlined"
 import SwitchLeftOutlinedIcon from "@mui/icons-material/SwitchLeftOutlined"
+import CalendarIcon from "@mui/icons-material/CalendarTodayOutlined"
+import ThermostatOutlinedIcon from "@mui/icons-material/ThermostatOutlined"
+import SpeedOutlinedIcon from "@mui/icons-material/SpeedOutlined"
+import BatteryStdOutlinedIcon from "@mui/icons-material/BatteryStdOutlined"
+
+// Data
+import { mainOptions, graphData } from "../../Assets/Data/Sidebar"
+import logoImage from "../../Assets/Images/logo.png"
 
 // Items
 import { Item } from "../SidebarItems/SidebarItem"
@@ -70,17 +79,14 @@ const SidebarComponent = () => {
         <Menu iconshape="square">
           <MenuItem
             icon={
-              collapsed ? (
-                <MenuOutlinedIcon onClick={() => collapseSidebar()} />
-              ) : sidebarRTL ? (
-                <SwitchLeftOutlinedIcon
-                  onClick={() => setSidebarRTL(!sidebarRTL)}
-                />
-              ) : (
-                <SwitchRightOutlinedIcon
-                  onClick={() => setSidebarRTL(!sidebarRTL)}
-                />
-              )
+              <IconButton
+                className="menu-icon"
+                onClick={
+                  broken ? () => toggleSidebar() : () => collapseSidebar()
+                }
+              >
+                {collapsed ? <MenuOutlinedIcon /> : <CloseOutlinedIcon />}
+              </IconButton>
             }
             style={{
               margin: "10px 0 20px 0",
@@ -97,18 +103,9 @@ const SidebarComponent = () => {
                 <Typography variant="h3" color={colors.grey[100]}>
                   ELECTRUM
                 </Typography>
-
-                <IconButton
-                  onClick={
-                    broken ? () => toggleSidebar() : () => collapseSidebar()
-                  }
-                >
-                  <CloseOutlinedIcon />
-                </IconButton>
               </Box>
             )}
           </MenuItem>
-
           {!collapsed && (
             <Box mb="25px">
               <Box
@@ -116,30 +113,77 @@ const SidebarComponent = () => {
                 justifyContent="center"
                 alignItems="center"
                 sx={{
-                  "& .avatar-image": {
+                  "& .avater-image": {
                     backgroundColor: colors.primary[500],
                   },
                 }}
               >
                 <img
-                  className="avatar-image"
-                  alt="Profile user"
+                  className="avater-image"
+                  alt="profile user"
                   width="100px"
                   height="100px"
-                  src={""}
-                  style={{
-                    cursor: "pointer",
-                    borderRadius: "50%",
-                  }}
+                  src={logoImage}
+                  style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
               <Box textAlign="center">
-                <Typography variant="h3" color={colors.grey[100]} fontWeight="bold" sx={{ m: "10px 0 0 0 " }}>
+                <Typography
+                  variant="h3"
+                  color={colors.grey[100]}
+                  fontWeight="bold"
+                  sx={{ m: "10px 0 0 0" }}
+                >
                   Pits & Crew
                 </Typography>
               </Box>
             </Box>
           )}
+
+          <Box paddingLeft={collapsed ? "0px" : "10%"}>
+            {/* Dashboard section */}
+            <Typography
+              variant="h6"
+              color={colors.grey[300]}
+              sx={{ m: "15px 20px 5px 10px" }}
+              textAlign={collapsed ? "center" : "left"}
+            >
+              Main
+            </Typography>
+
+            {mainOptions.map((item, index) => (
+              <Item
+                key={index}
+                title={item.title}
+                to={item.to}
+                icon={item.icon}
+                selected={selected}
+                setSelected={setSelected}
+                collapsed={collapsed}
+              />
+            ))}
+
+            {/* Graph section */}
+            <Typography
+              variant="h6"
+              color={colors.grey[300]}
+              sx={{ m: "15px 20px 5px 10px" }}
+              textAlign={collapsed ? "center" : "left"}
+            >
+              Graphs
+            </Typography>
+            {graphData.map((item, index) => (
+              <Item
+                key={index}
+                title={item.title}
+                to={item.to}
+                icon={item.icon}
+                selected={selected}
+                setSelected={setSelected}
+                collapsed={collapsed}
+              />
+            ))}
+          </Box>
         </Menu>
       </Sidebar>
     </Box>
