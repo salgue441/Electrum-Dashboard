@@ -1,0 +1,5 @@
+# Build from Make & CMake
+build/
+
+# Visual studio code settings
+.vscode/
