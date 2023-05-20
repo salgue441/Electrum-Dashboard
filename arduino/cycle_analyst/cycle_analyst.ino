@@ -20,7 +20,7 @@ typedef struct
 } CycleAnalystData;
 
 // Se asigna de que puerto serial se leen los datos
-HardwareSerial &cycleAnalystSerial = Serial1; // Serial, Serial1, Serial2 o Serial3
+HardwareSerial &cycleAnalystSerial = Serial; // Serial, Serial1, Serial2 o Serial3
 
 void setup()
 {
@@ -35,7 +35,7 @@ void loop()
   if (cycleAnalystSerial.available())
   {
     // Lee los datos del Cycle Analyst
-    CycleAnalystData cycleAnalystData = readCycleAnalyst(Serial);
+    CycleAnalystData cycleAnalystData = readCycleAnalyst(cycleAnalystData);
 
     // Imprime los datos del Cycle Analyst
     Serial.print("Ah: ");
