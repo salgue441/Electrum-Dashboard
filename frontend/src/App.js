@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import { Routes, Route } from "react-router-dom"
 
 // Components
@@ -9,6 +9,10 @@ import Topbar from "./Components/Topbar/Topbar"
 import Dashboard from "./Views/Dashboard/Dashboard"
 import Calendar from "./Views/Calendar/Calendar"
 import NotFound from "./Views/404/error"
+
+// Hooks
+import BackendAPI from "./Hooks/BackendAPI/backendAPI"
+import dataEntries from "./Hooks/DataEntries/dataEntries"
 
 // Themes
 import { CssBaseline, ThemeProvider } from "@mui/material"
@@ -25,6 +29,12 @@ import "./Styles/App.css"
 const App = () => {
   const [theme, colorMode] = useMode()
 
+  let { data, isPending } = BackendAPI()
+
+  let {
+    ampsHour, amps, voltage, velocity, distance
+  } = dataEntries(data)
+
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
@@ -36,7 +46,13 @@ const App = () => {
               <Topbar />
 
               <Routes>
-                <Route path="/" element={<Dashboard />} />
+                <Route path="/" element={<Dashboard
+                  ampsHour={ampsHour}
+                  amps={amps}
+                  voltage={voltage}
+                  velocity={velocity}
+                  distance={distance}
+                />} />
                 <Route path="/calendar" element={<Calendar />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>

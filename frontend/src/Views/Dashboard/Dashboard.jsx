@@ -10,6 +10,7 @@ import { Battery0BarOutlined } from "@mui/icons-material"
 // Components
 import Header from "../../Components/Header/Header"
 import StatBox from "../../Components/StatBox/StatBox"
+import Graph from "../../Components/Graph/graph"
 
 // Theme
 import { tokens } from "../../theme"
@@ -19,7 +20,7 @@ import { tokens } from "../../theme"
  * Render the dashboard component of the app
  * @returns {JSX.Element} - Dashboard component
  */
-const Dashboard = () => {
+const Dashboard = ({ ampsHour, amps, voltage, velocity, distance }) => {
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
 
@@ -141,44 +142,23 @@ const Dashboard = () => {
           gridColumn="span 12"
           backgroundColor={colors.primary[400]}
           gridRow="span 4"
+          display="flex"
+          flexDirection="column"
+          alignItems="stretch"
+          width="100%"
         >
-          <Box
-            mt="25px"
-            p="0 30px"
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            sx={{
-              "@media (max-width: 600px)": {
-                flexDirection: "column",
-                alignItems: "center",
-              },
-            }}
-          >
-            <Box>
-              <Typography variant="h2" color={colors.grey[100]}>
-                Racing Statistics
-              </Typography>
-            </Box>
-
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              sx={{
-                "@media (max-width: 600px)": {
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  flexDirection: "column",
-                  width: "100%",
-                },
-              }}
-            >
-              <canvas id="myChart" width="400" height="400"></canvas>
-            </Box>
+          <Box px={4} py={2}>
+            <Typography variant="h2" color={colors.grey[100]}>
+              Racing Statistics
+            </Typography>
           </Box>
-          {/* First element */}
+          <Box flex="1" minHeight={0} maxHeight={800} paddingLeft={4}>
+            <Graph
+              data={velocity.map((entry) => Number(entry.value))}
+              labels={velocity.map((entry) => entry.time)}
+              theme={theme}
+            />
+          </Box>
         </Box>
 
         {/* End  */}
