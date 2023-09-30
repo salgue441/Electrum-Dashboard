@@ -8,13 +8,14 @@
 // -100.92	14.88	-422.2	0.00	39.977
 // -101.04	14.88	-422.2	0.00	39.977
 
-// Librerias para escribir a SD
 #include <SPI.h>
 #include <SD.h>
 
-// Struct que contiene los datos del Cycle Analyst (---, Voltaje, Corriente, Velocidad, ---)
-typedef struct
-{
+/**
+ * @brief Struct que contiene los datos del Cycle Analyst 
+ * (Ampers Hora, Voltaje, Corriente, Velocidad, Distancia)
+ */
+typedef struct {
   float Ah;
   float V;
   float A;
@@ -22,107 +23,89 @@ typedef struct
   float D;
 } CycleAnalystData;
 
-// Function prototype
-String createFilePath(const char *, const char *, const char *);
+// Function prototypes
+void createFilePath(char *, const char *, const char *, const char *);
+CycleAnalystData readCycleAnalyst(HardwareSerial &);
 
-/* SD constants
- ** MOSI - pin 11
- ** MISO - pin 12
- ** CLK - pin 13
- ** CS - pin 10
- */
+// SD card constants
 const int LED_PIN = 5;
 const int chipSelect = 10;
+const char folderName[] = "tests";
+const char baseFileName[] = "logs";
+const char fileExtension[] = ".csv";
+char filePath[200];  // Assuming the file path won't exceed 50 characters
+const int writeInterval = 5000;
+unsigned long lastWrite = 0;
+char buffer[150];  // Assuming a buffer size of 100 characters should be enough
+const char separator = ',';
+HardwareSerial &cycleAnalystSerial = Serial;
 
-const char *folderName = "tests";
-const char *baseFileName = "logs";
-const char *fileExtension = ".csv";
-String filePath = createFilePath(folderName, baseFileName, fileExtension);
-
-const int writeInterval = 5000; // Intervalo de escritura en milisegundos
-unsigned long lastWrite = 0;    // Tiempo de la ultima escritura
-String buffer = "";             // Buffer de datos
-String separator = ",";         // Separador de datos
-
-// Se asigna de que puerto serial se leen los datos
-HardwareSerial &cycleAnalystSerial = Serial; // Serial, Serial1, Serial2 o Serial3
-
-void setup()
-{
+/**
+ * @brief Funcion para configurar el arduino con los puertos del Cycle Analyst y la SD
+ * 
+ */
+void setup() {
   pinMode(LED_PIN, OUTPUT);
-  // Inicializa los puertos seriales Serial -> PC, cycleAnalystSerial -> Cycle Analyst
-  // Serial.begin(9600);
-  // Serial.println("Started");
   cycleAnalystSerial.begin(9600);
-  // Abre la comunicacion serial
-  // Serial.begin(9600);
-  // Serial.print("Conectando a la tarjeta SD...");
 
-  if (!SD.begin())
-  {
-    // Serial.println("Ocurrio un error!");
-    bool state = true;
-    while (true)
-    {
-      digitalWrite(LED_PIN, state);
-      delay(1000);
-      state = !state;
+  /**
+   * @brief Manejo de errores de la SD
+   * @example Si no se puede inicializar la SD se enciende y apaga el LED rapidamente
+   */
+  if (!SD.begin(chipSelect)) {
+    // Flash LED rapidly to indicate SD card error
+    while (true) {
+      digitalWrite(LED_PIN, HIGH);
+      delay(250);
+      digitalWrite(LED_PIN, LOW);
+      delay(250);
     }
-    return;
   }
-  // Serial.println("Coneccion exitosa.");
-  // Crea la carpeta si no existe
-  if (!SD.exists(folderName))
-  {
+
+  if (!SD.exists(folderName)) {
     SD.mkdir(folderName);
   }
-  // Escribe el header en el archivo
-  String header = "Ah" + separator + "V" + separator + "A" + separator + "S" + separator + "D" + "\n";
+
+  createFilePath(filePath, folderName, baseFileName, fileExtension);
+
   File file = SD.open(filePath, FILE_WRITE);
-  if (file)
-  {
-    // Serial.println("Archivo abierto correctamente.");
-    // Perform actions on the file
-    file.print(header);
+  if (file) {
+    file.println("Ah,V,A,S,D");  // Write header
     file.close();
-  }
-  else
-  {
-    // Serial.println("Error al abrir el archivo.");
-    digitalWrite(LED_PIN, HIGH);
+  } else {
+    // Flash LED slowly to indicate file error
+    while (true) {
+      digitalWrite(LED_PIN, HIGH);
+      delay(1000);
+      digitalWrite(LED_PIN, LOW);
+      delay(1000);
+    }
   }
 }
 
-void loop()
-{
-  // Si hay datos en el puerto serial del Cycle Analyst se leen
-  if (cycleAnalystSerial.available())
-  {
-    // Lee los datos del Cycle Analyst
-    CycleAnalystData cycleAnalystData = readCycleAnalyst(cycleAnalystSerial);
+/**
+ * @brief Funcion para leer los datos del Cycle Analyst y escribirlos en la SD
+ * 
+ */
+void loop() {
+  if (cycleAnalystSerial.available()) {
+    CycleAnalystData data = readCycleAnalyst(cycleAnalystSerial);
+    snprintf(buffer, sizeof(buffer), "%f,%f,%f,%f,%f\\n", data.Ah, data.V, data.A, data.S, data.D);
 
-    buffer += String(cycleAnalystData.Ah) + separator;
-    buffer += String(cycleAnalystData.V) + separator;
-    buffer += String(cycleAnalystData.A) + separator;
-    buffer += String(cycleAnalystData.S) + separator;
-    buffer += String(cycleAnalystData.D) + '\n';
-
-    // Si ya paso el tiempo de escritura se escribe en el puerto serial
-    if (millis() - lastWrite > writeInterval)
-    {
+    if (millis() - lastWrite > writeInterval) {
       File file = SD.open(filePath, FILE_WRITE);
-      // Si se pudo abrir el archivo se escribe el buffer
-      if (file)
-      {
-        // Serial.println("Archivo abierto correctamente.");
+      if (file) {
         file.print(buffer);
         file.close();
-        buffer = ""; // Se limpia el buffer
-      }
-      else
-      {
-        // Serial.println("Error al abrir el archivo.");
-        digitalWrite(LED_PIN, HIGH);
+        buffer[0] = '\\0';  // Reset buffer
+      } else {
+        // Flash LED in a unique pattern to indicate write error
+        for (int i = 0; i < 3; i++) {
+          digitalWrite(LED_PIN, HIGH);
+          delay(500);
+          digitalWrite(LED_PIN, LOW);
+          delay(500);
+        }
       }
       lastWrite = millis();
     }
@@ -130,50 +113,38 @@ void loop()
 }
 
 /**
- * @brief Lee los datos del Cycle Analyst
- *
- * @param serial De que puerto serial se leen los datos
- * @return CycleAnalystData
+ * @brief Funcion para leer los datos del Cycle Analyst
+ * @param serial 
+ * @return CycleAnalystData 
  */
-CycleAnalystData readCycleAnalyst(HardwareSerial &serial)
-{
-  float Ah, V, A, S, D;
-  Ah = serial.readStringUntil('\t').toFloat();
-  V = serial.readStringUntil('\t').toFloat();
-  A = serial.readStringUntil('\t').toFloat();
-  S = serial.readStringUntil('\t').toFloat();
-  D = serial.readStringUntil('\n').toFloat();
-
-  // Guar
-  CycleAnalystData data = {Ah, V, A, S, D};
+CycleAnalystData readCycleAnalyst(HardwareSerial &serial) {
+  CycleAnalystData data;
+  data.Ah = serial.parseFloat();
+  serial.read();  // Consume separator
+  data.V = serial.parseFloat();
+  serial.read();  // Consume separator
+  data.A = serial.parseFloat();
+  serial.read();  // Consume separator
+  data.S = serial.parseFloat();
+  serial.read();  // Consume separator
+  data.D = serial.parseFloat();
   return data;
 }
 
 /**
- * @brief Crea el path del archivo, si ya existe se le agrega un numero al final
- *
- * @param folderName Nombre de la carpeta
- * @param baseFileName Nombre base del archivo
- * @param fileExtension Extension del archivo
- * @return Path del archivo
+ * @brief Create a File Path object
+ * 
+ * @param path 
+ * @param folder 
+ * @param baseFile 
+ * @param extension 
  */
-String createFilePath(const char *folderName, const char *baseFileName, const char *fileExtension)
-{
-  String filePath = "/";
-  filePath += folderName;
-  filePath += "/";
-  filePath += baseFileName;
-  int fileCount = 0;
 
-  // Check if the base file name already exists
-  while (SD.exists(filePath + String(fileCount) + fileExtension))
-  {
+void createFilePath(char *path, const char *folder, const char *baseFile, const char *extension) {
+  sprintf(path, "/%s/%s%s", folder, baseFile, extension);
+  int fileCount = 0;
+  while (SD.exists(path)) {
+    sprintf(path, "/%s/%s%d%s", folder, baseFile, fileCount, extension);
     fileCount++;
   }
-
-  // Append the file count and file extension
-  filePath += String(fileCount);
-  filePath += fileExtension;
-
-  return filePath;
 }
